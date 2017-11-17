@@ -13,5 +13,5 @@ This program is a drawing program, much like the original microsoft paint. It al
 
 Note: I am currently rewriting this program using JAVAFX to show my understanding of both SWING and JAVAFX.
 
-![powerpaint.png]({{site.baseurl}}/powerpaint.png)
+![]({{site.baseurl}}//powerpaint.png)
 
