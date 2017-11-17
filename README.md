@@ -14,3 +14,7 @@ This program is a drawing program, much like the original microsoft paint. It al
 Note: I am currently rewriting this program using JAVAFX to show my understanding of both SWING and JAVAFX.
 ![Alt text](/powerpaint.png?raw=true "Optional Title")
 
+
+![Alt text](/powerpaint2.gif?raw=true "Optional Title")
+
+![Alt text](/powerpaint3.png?raw=true "Optional Title")
