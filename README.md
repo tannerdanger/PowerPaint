@@ -3,7 +3,7 @@
 A microsoft paint replica built entirely from scratch.
 
 This project displays an understanding of:
-- Inheretance
+- Inheritance
 - GUI/Swing design
 - Graphics
 - Actions/event handling
