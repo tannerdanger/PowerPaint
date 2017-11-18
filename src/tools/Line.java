@@ -1,12 +1,12 @@
 /*
- * TCSS 305 - Assignment 5 PowerPaint
+ * TCSS 305 - PowerPaint
  * Fall 2017
  */
 
+
 package tools;
 
-import java.awt.Color;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
@@ -18,8 +18,10 @@ import java.awt.geom.Point2D;
  *
  */
 public class Line extends AbstractTool {
-
-	public Line(){
+	/**
+	 * Basic constructor that simply calls to the super.
+	 */
+	public Line() {
 		super();
 	}
 	/**
@@ -27,11 +29,10 @@ public class Line extends AbstractTool {
 	 *
 	 * @param theStart the the start point of the object being drawn.
 	 * @param theEnd the the end point of the object being drawn.
-	 * @param theColor color of the line being drawn
 	 */
-	public Line(final Point2D theStart, final Point2D theEnd, final Color theColor) {
+	public Line(final Point2D theStart, final Point2D theEnd) {
 
-		super(theStart, theEnd, theColor);
+		super(theStart, theEnd);
 	}
 
 

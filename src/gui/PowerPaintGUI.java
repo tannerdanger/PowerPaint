@@ -1,51 +1,149 @@
+/*
+ * TCSS 305 - PowerPaint
+ * Fall 2017
+ */
 package gui;
 
+import actions.Listeners;
+import actions.ToolActions;
 import tools.*;
 import tools.Rectangle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is the main class that builds the user interface that the user draws with.
+ *
+ * @author Tanner Brown
+ * @version 17 Nov 2017
+ */
 public class PowerPaintGUI extends JFrame {
 
-	//	ToolBar myToolBar;
-	JToolBar myToolBar;
-
-	TopMenu myTopMenu;
-
-	DrawPanel myDrawPanel;
-
-	//Tool myTool;
-
-	private int myThickness;
-
-	private Color myPrimaryColor;
-
-	private Color mySecondaryColor;
-
-	private ColorIcon myPrimaryColorIcon;
-
-	private ColorIcon mySecondaryColorIcon;
-
+	/** A randomly generated serialization id. */
+	private static final long serialVersionUID = 4826188794255200508L;
+	/**
+	 * A constant color that matches The University of Washington's color purple.
+	 */
 	private static final Color UW_PURPLE = new Color(51, 0, 111);
+	/** A constant color that matches The University of Washington's color Gold. */
 	private static final Color UW_GOLD = new Color(232, 211, 162);
+	/**
+	 * A variable for the a string so that checkstyle is pleased.
+	 */
+	private static final String LINE = "Line";
 
+	/**
+	 * A custom JPanel that the user draws on.
+	 */
+	private static DrawPanel myDrawPanel;
+
+	//    /** The primary color selected by the user. */
+	//    private static Color myPrimaryColor;
+	//    /** The secondary color selected by the user. */
+	//    private static Color mySecondaryColor;
+
+	/**
+	 * The colored icon for the primary color button.
+	 */
+	private static ColorIcon myPrimaryColorIcon;
+	/**
+	 * The colored icon for the secondary color button.
+	 */
+	private static ColorIcon mySecondaryColorIcon;
+
+	/**
+	 * The movable toolbar that holds buttons for the different drawing tools.
+	 */
+	private JToolBar myToolBar;
+
+	/**
+	 * The dropdown menubar at the top of the frame.
+	 */
+	private TopMenu myTopMenu;
+
+	/**
+	 * The button that allows the user to select a primary color.
+	 */
+	private JMenuItem myPrimaryColorButton;
+	/**
+	 * The button that allows the user to select a secondary color.
+	 */
+	private JMenuItem mySecondColorButton;
+
+	/**
+	 * The JSlider used to determine the thickness of the shape being drawn.
+	 */
+	private JSlider mySlider;
+
+	/** The menuitem that clears the drawing area. */
 	private JMenuItem myClearButon;
 
-
+	/**
+	 * A list of actions that the various tool buttons trigger.
+	 */
 	private List<ToolActions> myToolActions;
 
-	protected PowerPaintGUI(){
+	/**
+	 * The constructor that simply calls to the constructor and sets the title of the frame.
+	 * The setup() method is then run from the PowerPointMain class to build the GUI.
+	 */
+	protected PowerPaintGUI() {
 		super("Assignment 5");
 	}
 
-	protected void setup(){
+	/**
+	 * A method that sets the tool in use.
+	 *
+	 * @param theTool that is in use.
+	 */
+	public static void setTool(final Tool theTool) {
+		myDrawPanel.setTool(theTool);
+	}
+
+	/**
+	 * Sets the color of icon for the primary color button.
+	 *
+	 * @param theColor the new color.
+	 */
+	public static void setPrimaryIconColor(final Color theColor) {
+		myPrimaryColorIcon.setColor(theColor);
+	}
+
+	/**
+	 * Sets the color of icon for the secondary color button.
+	 *
+	 * @param theColor the new color.
+	 */
+	public static void setSecondaryIconColor(final Color theColor) {
+		mySecondaryColorIcon.setColor(theColor);
+	}
+
+	/**
+	 * Sets the primary color for this class, as well as the draw panel.
+	 *
+	 * @param theColor the new color.
+	 */
+	public static void setPrimaryColor(final Color theColor) {
+		myDrawPanel.setMyPrimaryColor(theColor);
+	}
+
+	/**
+	 * Sets the secondary color for this class, as well as the draw panel.
+	 *
+	 * @param theColor the new color.
+	 */
+	public static void setSecondaryColor(final Color theColor) {
+		myDrawPanel.setMySecondaryColor(theColor);
+	}
+
+	/**
+	 * The method that builds the GUI.
+	 */
+	protected void setup() {
 
 		myPrimaryColorIcon = new ColorIcon(UW_PURPLE);
 		mySecondaryColorIcon = new ColorIcon(UW_GOLD);
@@ -59,27 +157,26 @@ public class PowerPaintGUI extends JFrame {
 
 		setupDisplay();
 
+		addListeners();
 
-		//Listens for property change to enable or disable the clear button
-		myDrawPanel.addPropertyChangeListener(e -> {
-			if("clear".equals(e.getPropertyName())) {
-				myClearButon.setEnabled((Boolean) e.getNewValue());
-			}
-		});
 	}
 
-
+	/**
+	 * This method sets up the components inside the frame.
+	 */
 	private void setupDisplay() {
 
-
-
-
 		//Create the icon
-		ImageIcon frameIcon = new ImageIcon("./images/realCharlesBryan32.gif");
+		final ImageIcon frameIcon = new ImageIcon("./images/realCharlesBryan32.gif");
 		final Image image = frameIcon.getImage();
 
 		//setup Frame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        /*
+         * Set the place the GUI pops up to the center of the screen instead of the corner
+         * because its so annoying...this is for me...not for you...
+         */
 		setLocationRelativeTo(null);
 		setIconImage(image);
 		setJMenuBar(myTopMenu);
@@ -87,58 +184,60 @@ public class PowerPaintGUI extends JFrame {
 		add(myToolBar, BorderLayout.SOUTH);
 		pack();
 		setVisible(true);
-
-
-
-
 	}
 
+	/**
+	 * This method creates a different ToolAction for each tool class.
+	 */
 	private void setupToolActions() {
 		myToolActions = new ArrayList<ToolActions>();
 
-		myToolActions.add(new ToolActions("Pencil", new ImageIcon("./images/pencil.gif"), new Pencil()));
+		myToolActions.add(new ToolActions("Pencil",
+				new ImageIcon("./images/pencil.gif"),
+				new Pencil()));
 
-		myToolActions.add(new ToolActions("Line", new ImageIcon("./images/line.gif"), new Line()));
+		myToolActions.add(new ToolActions(LINE, new
+				ImageIcon("./images/line.gif"),
+				new Line()));
 
-		myToolActions.add(new ToolActions("Rectangle", new ImageIcon("./images/rectangle.gif"), new Rectangle()));
+		myToolActions.add(new ToolActions("Rectangle",
+				new ImageIcon("./images/rectangle.gif"),
+				new Rectangle()));
 
-		myToolActions.add(new ToolActions("Ellipse", new ImageIcon("./images/ellipse.gif"), new Ellipse()));
+		myToolActions.add(new ToolActions("Ellipse",
+				new ImageIcon("./images/ellipse.gif"),
+				new Ellipse()));
 
-		myToolActions.add(new ToolActions("Eraser", new ImageIcon("./images/eraser.gif"), new Eraser()));
-
+		myToolActions.add(new ToolActions("Eraser",
+				new ImageIcon("./images/eraser.gif"),
+				new Eraser()));
 
 
 	}
 
+	/**
+	 * Creates the toolbar and adds buttons to it.
+	 */
 	private void setupToolBar() {
 		myToolBar = new JToolBar();
 
 
 		final ButtonGroup btngrp = new ButtonGroup();
-		for(final ToolActions ta : myToolActions){
+		for (final ToolActions ta : myToolActions) {
 			final JToggleButton tempToggle = new JToggleButton(ta);
 			btngrp.add(tempToggle);
-			//myToolBar.add(tempToggle);
-			if("Line".equals(tempToggle.getText())){
-
-			}else{
-
-			}
 			myToolBar.add(tempToggle);
 		}
 	}
 
+	/**
+	 * Creates the menubar at the top of the frame.
+	 */
 	private void setupMenuBar() {
 		myTopMenu = new TopMenu();
 
 		//Setup Slider
-		JSlider slider = myTopMenu.getSlider();
-
-		//Todo: Ensure value is within range.
-		slider.addChangeListener( e -> {
-			myThickness = slider.getValue();
-			myDrawPanel.setThickness(myThickness);
-		});
+		mySlider = myTopMenu.getSlider();
 
 		final ButtonGroup btngrp = new ButtonGroup();
 
@@ -149,89 +248,33 @@ public class PowerPaintGUI extends JFrame {
 		}
 
 		//Create color buttons
-		JMenuItem primaryColorButton = new JMenuItem("Primary Color...", myPrimaryColorIcon);
-		primaryColorButton.setMnemonic(KeyEvent.VK_P);
-		JMenuItem secondColorButton = new JMenuItem("Secondary Color...", mySecondaryColorIcon);
-		secondColorButton.setMnemonic(KeyEvent.VK_S);
+		myPrimaryColorButton = new JMenuItem("Primary Color...", myPrimaryColorIcon);
+		myPrimaryColorButton.setMnemonic(KeyEvent.VK_P);
+		mySecondColorButton = new JMenuItem("Secondary Color...", mySecondaryColorIcon);
+		mySecondColorButton.setMnemonic(KeyEvent.VK_S);
 
 		//Create clear button
 		myClearButon = new JMenuItem("Clear");
 		myClearButon.setEnabled(false);
 		myClearButon.setMnemonic(KeyEvent.VK_C);
 
-		myTopMenu.addOptions(primaryColorButton);
-		myTopMenu.addOptions(secondColorButton);
+		myTopMenu.addOptions(myPrimaryColorButton);
+		myTopMenu.addOptions(mySecondColorButton);
 		myTopMenu.addOptions(new JSeparator());
 		myTopMenu.addOptions(myClearButon);
-		//clearButon.setEnabled(true);
-
-
-		primaryColorButton.addActionListener(e -> {
-
-			myPrimaryColor = JColorChooser.showDialog(null, "Choose a new Color", myPrimaryColor);
-			myPrimaryColorIcon.setColor(myPrimaryColor);
-			myDrawPanel.setMyPrimaryColor(myPrimaryColor);
-		});
-
-		secondColorButton.addActionListener(e -> {
-
-			mySecondaryColor = JColorChooser.showDialog(null, "Choose a new Color", myPrimaryColor);
-			mySecondaryColorIcon.setColor(mySecondaryColor);
-			myDrawPanel.setMySecondaryColor(mySecondaryColor);
-		});
-
-
-		//clearButon.addPropertyChangeListener(PropertyChangeListener listener);
-
-		myClearButon.addActionListener(e -> {
-			myDrawPanel.clear();
-		});
-
 	}
 
+	/**
+	 * Adds all of the action listeners for all of the components.
+	 */
+	private void addListeners() {
+		myPrimaryColorButton.addActionListener(new Listeners());
+		mySecondColorButton.addActionListener(new Listeners());
+		myClearButon.addActionListener(new Listeners(myDrawPanel));
+		mySlider.addChangeListener(new Listeners(myDrawPanel, mySlider));
 
-	private class ToolActions extends AbstractAction{
-
-		private final Tool myTool;
-
-		ToolActions(final String theName, final Icon theIcon, final Tool theTool) {
-
-			super(theName);
-
-			//put small icon into the action
-			putValue(Action.SMALL_ICON, theIcon);
-
-			//Assign larger icon
-			final ImageIcon icon = (ImageIcon) theIcon;
-			final Image largeImage = icon.getImage().getScaledInstance(15, -1, Image.SCALE_SMOOTH);
-			final ImageIcon largeIcon = new ImageIcon(largeImage);
-			putValue(Action.LARGE_ICON_KEY, largeIcon);
-
-			//Make the mnemonic key the first char in the name
-			if ("Eraser".equals(theName)) {
-				putValue(Action.MNEMONIC_KEY, KeyEvent.getExtendedKeyCodeForChar('a'));
-			} else{
-				putValue(Action.MNEMONIC_KEY, KeyEvent.getExtendedKeyCodeForChar(theName.charAt(0)));
-			}
-			//Create tooltip
-			putValue(Action.SHORT_DESCRIPTION, "A " + theName + " Tool ");
-
-			// coordinate button selection
-			//putValue(Action.SELECTED_KEY, true);
-			if("Line".equals(theName)){
-				putValue(Action.SELECTED_KEY, true);
-			}else{
-				putValue(Action.SELECTED_KEY, false);
-			}
-
-			myTool = theTool;
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			myDrawPanel.setTool(myTool);
-		}
-
+		//Listens for property change to enable or disable the clear button
+		myDrawPanel.addPropertyChangeListener(new Listeners(myClearButon));
 	}
 
 

@@ -5,7 +5,7 @@
 
 package tools;
 
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.Point2D;
 
 /**

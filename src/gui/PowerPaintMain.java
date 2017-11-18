@@ -1,12 +1,12 @@
 /*
- * TCSS 305 - Assignment 5 PowerPaint
+ * TCSS 305 - PowerPaint
  * Fall 2017
  */
 
 package gui;
-import java.awt.EventQueue;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * This class runs the PowerPaint program and launches the GUI.

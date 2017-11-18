@@ -1,18 +1,15 @@
 /*
- * TCSS 305 - Assignment 5 PowerPaint
+ * TCSS 305 - PowerPaint
  * Fall 2017
  */
 
 package gui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import javax.swing.Icon;
-import javax.swing.JColorChooser;
+import javax.swing.*;
+import java.awt.*;
 
 /**
- * Class that sets the icon color for the color... buttons in the menu bar.
+ * Class that sets the icon color for the 'color...' buttons in the menu bar.
  * @author Tanner Brown
  * @version 9 Nov 2017
  *
@@ -54,7 +51,6 @@ public class ColorIcon implements Icon {
 
 		theGraphics.setColor(myIconColor);
 		theGraphics.fillRect(theX, theY, ICON_WIDTH, ICON_HEIGHT);
-
 
 	}
 

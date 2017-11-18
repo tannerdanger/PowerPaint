@@ -1,10 +1,11 @@
-/**
- *
+/*
+ * TCSS 305 - PowerPaint
+ * Fall 2017
  */
+
 package tools;
 
-import java.awt.Color;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 
@@ -24,11 +25,12 @@ public abstract class AbstractTool implements Tool {
 	/** Point2D object representing the ending point of an object being drawn. */
 	private Point2D myEndPoint;
 
-	private Color myColor;
 
-	//public tool for creating objects
-	public AbstractTool(){
-
+	/**
+	 * Empty constructor.
+	 */
+	public AbstractTool() {
+		//Empty.
 	}
 
 	/**
@@ -38,19 +40,19 @@ public abstract class AbstractTool implements Tool {
 	 * @param theStart Point2D object representing the starting point of an object being drawn.
 	 * @param theEnd Point2D object representing the ending point of an object being drawn.
 	 */
-	protected AbstractTool(final Point2D theStart, final Point2D theEnd, Color theColor) {
-		//myStartingPoint = theStart;
-		//myEndPoint = theEnd;
+	protected AbstractTool(final Point2D theStart, final Point2D theEnd) {
+
+		//Ensures the values being passed aren't null values.
 		myStartingPoint = Objects.requireNonNull(theStart);
 		myEndPoint = Objects.requireNonNull(theEnd);
-		myColor = theColor;
+
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public void setStartingPoint(final Point2D theStartingPoint) {
 
-		//myStartingPoint = theStartingPoint;
+		//Ensures the values being passed aren't null values.
 		myStartingPoint = Objects.requireNonNull(theStartingPoint);
 
 	}
@@ -66,7 +68,7 @@ public abstract class AbstractTool implements Tool {
 	@Override
 	public void setEndPoint(final Point2D theEndPoint) {
 
-		//myEndPoint = theStartingPoint;
+		//Ensures the values being passed aren't null values.
 		myEndPoint = Objects.requireNonNull(theEndPoint);
 
 	}
@@ -82,25 +84,5 @@ public abstract class AbstractTool implements Tool {
 	@Override
 	public abstract Shape getShape();
 
-	public Color getMyColor() {
-		return myColor;
-	}
-
-	public void setMyColor(Color theColor) {
-		this.myColor = theColor;
-	}
-
-
-	public String getName(){
-
-		return this.getClass().getSimpleName();
-	}
-
-	public Double getStartX(){
-
-		return myStartingPoint.getX();
-	}
-
-//	public Double getStartY(){			}
 
 }
